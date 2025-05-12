@@ -1,3 +1,17 @@
+# Cách clone dự án về máy tính
+```c
+   https://github.com/nqk-khanhbk/ITSS2.git
+```
+# Cách cài đặt Mongodb trên máy tính mỗi người
+1. Tải MongoDB Compass
+2. Vào add new connect
+   Xong dán cài này vào
+   ```c
+      mongodb+srv://nguyenquockhanh01022003:xnvB16F3MWx66Dza@databasebuild.7o62o.mongodb.net/ITSS2
+   ```
+
+
+
 # API 
 1. Lấy danh sách các công việc(GET)
    
