@@ -69,9 +69,9 @@ export const index = async (req: Request, res: Response) => {
       const days = req.query.days.toString().split(',').map((s) => s.trim());
       find.workingTime = { $regex: days.join('|'), $options: 'i' }; // Tìm bất kỳ ngày nào có trong workingTime
     }
+
     // Đếm số lượng job phù hợp
     const countJobs = await Job.countDocuments(find);
-
     // Phân trang
     console.log(req.query)
     const objectPagination = paginationHelper(
@@ -89,6 +89,27 @@ export const index = async (req: Request, res: Response) => {
       sort[sortKey] = req.query.sortValue;
     }
     //end sort
+    // Lọc theo thời gian linh hoạt của khách hàng
+    if (req.query.available) {
+      const userAvailable = req.query.available
+        .toString()
+        .split(",")
+        .map((item) => {
+          const [day, period] = item.trim().split("-");
+          return { day, period };
+        });
+
+      // Tìm job có ít nhất 1 buổi trùng với người dùng
+      find.workingSchedule = {
+        $elemMatch: {
+          $or: userAvailable.map(({ day, period }) => ({
+            day,
+            period
+          }))
+        }
+      };
+    }
+    const count = await Job.countDocuments(find);
     // Truy vấn danh sách job
     const jobs = await Job.find(find).sort(sort)
       .limit(objectPagination.limitItems)
@@ -97,7 +118,7 @@ export const index = async (req: Request, res: Response) => {
     res.status(200).json({
       data: jobs,
       pagination: objectPagination,
-      countJobs: countJobs
+      countJobs: count
     });
   } catch (error) {
     console.error("Job Index Error:", error);
