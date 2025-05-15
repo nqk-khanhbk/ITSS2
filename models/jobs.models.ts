@@ -2,29 +2,36 @@ import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true }, // Tên công việc
-    jobType: { type: String },               // "Part-Time", "Full-Time", ...(thoi gian lm vc)
-    category: { type: String },              // "Gia sư", "Sales", ...(vtri cong viec)
-    jobForm: { type: String },               // "Internship", "Contract", "Làm thêm", ...(loai cviec)
+    title: { type: String, required: true }, // Tiêu đề công việc
+
+    jobType: { type: String },               // "Part-Time", "Full-Time", ...
+    category: { type: String },              // "Gia sư", "Sales", ...
+    jobForm: { type: String },               // "Internship", "Contract", ...
 
     company: {
-      name: { type: String },
-      location: { type: String },
+      name: { type: String },                // Tên công ty
+      location: { type: String },            // Tỉnh/Thành phố
+      employeeCount: { type: String },       // Ví dụ: "100 nhân viên"
+      industry: { type: String },            // Ví dụ: "Giảng dạy"
+      address: { type: String },             // Ví dụ: "74 ngõ Xã Đàn 2, Nam Đồng, Đống Đa, Hà Nội"
+      logo: { type: String }, // ✅ Thêm logo công ty
     },
 
-    address: { type: String },               // Địa chỉ cụ thể
-    salary: { type: Number },                // Ví dụ: 250000 (đơn vị có thể mặc định là đ/buổi)
+    address: { type: String },               // Địa điểm làm việc cụ thể
+    salary: { type: Number },                // Lương (ví dụ 250000 = 250.000đ)
+    salaryUnit: { type: String },            // Ví dụ: "buổi", "giờ", "tháng"
+    experienceRequired: { type: String },    // Ví dụ: "Không yêu cầu kinh nghiệm"
+    numberOfPeople: { type: String },        // Ví dụ: "1 người"
+    workingTime: { type: String },           // Ví dụ: "Thứ 2, Thứ 3, Thứ 5 : 7h30–9h30"
+    startDate: { type: Date },               // Ngày bắt đầu
+    endDate: { type: Date },                 // Ngày kết thúc
+    description: { type: String },           // Mô tả công việc chi tiết
 
-    deadline: { type: Number },              // Số ngày còn lại 
-
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
+    deleted: { type: Boolean, default: false },
     deletedAt: { type: Date },
   },
   {
-    timestamps: true, // Tự động thêm createdAt và updatedAt
+    timestamps: true, // createdAt & updatedAt
   }
 );
 

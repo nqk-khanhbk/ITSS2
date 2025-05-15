@@ -1,45 +1,104 @@
 import { Request, Response } from "express";
 import Job from '../models/jobs.models';
-
+import { paginationHelper } from "../helper/pagination.helper";
+import { SearchHelper } from "../helper/search.helper";
 //[GET]/api/v1/jobs
 export const index = async (req: Request, res: Response) => {
-    try {
-        const { jobForm, category, jobType, minSalary, maxSalary } = req.query;
+try {
+    const find: any = {
+      deleted: false,
+    };
+    console.log(req.query)
+    const conditions: any[] = [];
 
-        const query: any = { deleted: false };
-
-        // jobForm: "Làm thêm,Internship"
-        if (jobForm) {
-            query.jobForm = {
-                $in: jobForm.toString().split(",").map(s => s.trim()),
-            };
-        }
-
-        // category: "Design,Gia sư"
-        if (category) {
-            query.category = {
-                $in: category.toString().split(",").map(s => s.trim()),
-            };
-        }
-        //jobType
-        if (jobType) {
-            query.jobType = {
-                $in: jobType.toString().split(",").map(s => s.trim()),
-            };
-        }
-
-        //  Thêm lọc theo mức lương
-        if (minSalary || maxSalary) {
-            query.salary = {};
-            if (minSalary) query.salary.$gte = Number(minSalary);
-            if (maxSalary) query.salary.$lte = Number(maxSalary);
-        }
-        const jobs = await Job.find(query);
-        // console.log(jobs)
-        res.status(200).json(jobs);
-    } catch (error) {
-        res.status(404).json({ mesage: "Server error" });
+    // Tìm theo keyword
+    const keyword = req.query.keyword?.toString().trim();
+    if (keyword) {
+      const regex = new RegExp(keyword, "i");
+      conditions.push({
+        category: regex, // hoặc mở rộng: $or: [{ category: regex }, { title: regex }]
+      });
     }
+
+    // Tìm theo địa chỉ
+    const address = req.query.address?.toString().trim();
+    if (address) {
+      const regex = new RegExp(address, "i");
+      conditions.push({
+        address: regex,
+      });
+    }
+
+    // Nếu có điều kiện tìm kiếm -> thêm vào query
+    if (conditions.length > 0) {
+      find.$and = conditions;
+    }
+    // Lọc theo category (ví dụ: ?category=Gia%20sư,Design)
+    if (req.query.category) {
+      find.category = {
+        $in: req.query.category.toString().split(",").map((s) => s.trim()),
+      };
+    }
+
+    // Lọc theo jobForm
+    if (req.query.jobForm) {
+      find.jobForm = {
+        $in: req.query.jobForm.toString().split(",").map((s) => s.trim()),
+      };
+    }
+
+    // Lọc theo jobType
+    if (req.query.jobType) {
+      find.jobType = {
+        $in: req.query.jobType.toString().split(",").map((s) => s.trim()),
+      };
+    }
+
+    // Lọc theo mức lương
+    if (req.query.minSalary || req.query.maxSalary) {
+      find.salary = {};
+      if (req.query.minSalary) find.salary.$gte = Number(req.query.minSalary);
+      if (req.query.maxSalary) find.salary.$lte = Number(req.query.maxSalary);
+    }
+    // Lọc theo các ngày làm việc
+    if (req.query.days) {
+      const days = req.query.days.toString().split(',').map((s) => s.trim());
+      find.workingTime = { $regex: days.join('|'), $options: 'i' }; // Tìm bất kỳ ngày nào có trong workingTime
+    }
+    // Đếm số lượng job phù hợp
+    const countJobs = await Job.countDocuments(find);
+
+    // Phân trang
+    console.log(req.query)
+    const objectPagination = paginationHelper(
+      {
+        currentPage: 1,
+        limitItems:  parseInt(req.query.limit as string) || 30
+      },
+      req.query,
+      countJobs
+    );
+    // sắp xếp theo sortkey và sortvalue tương ứng
+    const sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        const sortKey = req.query.sortKey.toString();
+        sort[sortKey] = req.query.sortValue;
+    }
+    //end sort
+    // Truy vấn danh sách job
+    const jobs = await Job.find(find).sort(sort)
+      .limit(objectPagination.limitItems)
+      .skip(objectPagination.skip);
+
+    res.status(200).json({
+      data: jobs,
+      pagination: objectPagination,
+      countJobs:countJobs
+    });
+  } catch (error) {
+    console.error("Job Index Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 }
 //[GET]/api/v1/jobs/detail/:id
 export const detail = async (req: Request, res: Response) => {
