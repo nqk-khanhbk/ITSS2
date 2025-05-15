@@ -23,6 +23,21 @@ const jobSchema = new mongoose.Schema(
     experienceRequired: { type: String },    // Ví dụ: "Không yêu cầu kinh nghiệm"
     numberOfPeople: { type: String },        // Ví dụ: "1 người"
     workingTime: { type: String },           // Ví dụ: "Thứ 2, Thứ 3, Thứ 5 : 7h30–9h30"
+    // ✅ Trường mới
+    workingSchedule: [
+      {
+        day: {
+          type: String,
+          enum: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
+          required: true,
+        },
+        period: {
+          type: String,
+          enum: ["sáng", "chiều", "tối"],
+          required: true,
+        }
+      }
+    ],
     startDate: { type: Date },               // Ngày bắt đầu
     endDate: { type: Date },                 // Ngày kết thúc
     description: { type: String },           // Mô tả công việc chi tiết
