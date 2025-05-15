@@ -30,4 +30,21 @@
 4. Lọc theo khoảng lương từ bao nhiêu đến bao nhiêu
 
     http://localhost:8080/api/v1/jobs?minSalary=200000&maxSalary=500000
+5. Sort theo mức lương và ngày mới nhất tạo công việc
+   
+   http://localhost:8080/api/v1/jobs?sortKey=salary&sortValue=desc
+
+   http://localhost:8080/api/v1/jobs?sortKey=startDate&sortValue=asc
+
+ 6.Lấy ra địa chỉ công việc
+
+      http://localhost:8080/api/v1/address
+
+   7.Phân trang sản phẩm
+
+      http://localhost:8080/api/v1/jobs?page=1&limit=6
+      
+   8.Tìm kiếm sản phẩn theo Keywork (tìm theo category job) và địa chỉ
+
+     http://localhost:8080/api/v1/jobs?keyword=Nhân viên bán hàng&address= Trần Đại Nghĩa
    
