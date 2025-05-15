@@ -22,11 +22,14 @@
 
 5. Lọc theo nhiều tiêu chí(GET) Gửi lên đúng như này nha
    
-   http://localhost:8080/api/v1/jobs?jobForm=Làm%20thêm,Contract&jobType=Part-Time,Full-Time
+   http://localhost:8080/api/v1/jobs?jobForm=Làm thêm,Contract&jobType=Part-Time,Full-Time
 
     ***API để test thêm phần này
   
-     http://localhost:8080/api/v1/jobs?jobForm=Làm%20thêm&jobType=Part-Time&category=Gia%20sư
+     http://localhost:8080/api/v1/jobs?jobForm=Làm thêm&jobType=Part-Time&category=Gia sư
+
+     http://localhost:8080/api/v1/jobs?jobForm=Contract&jobType=Part-Time&category=Gia sư,Sales&days=Thứ 2,Thứ 4,Thứ 5
+   
 4. Lọc theo khoảng lương từ bao nhiêu đến bao nhiêu
 
     http://localhost:8080/api/v1/jobs?minSalary=200000&maxSalary=500000
