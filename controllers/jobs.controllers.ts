@@ -4,7 +4,7 @@ import { paginationHelper } from "../helper/pagination.helper";
 import { SearchHelper } from "../helper/search.helper";
 //[GET]/api/v1/jobs
 export const index = async (req: Request, res: Response) => {
-try {
+  try {
     const find: any = {
       deleted: false,
     };
@@ -33,26 +33,30 @@ try {
     if (conditions.length > 0) {
       find.$and = conditions;
     }
-    // Lọc theo category (ví dụ: ?category=Gia%20sư,Design)
+    // Lọc theo category (ví dụ: ?category=Gia sư,Design)
     if (req.query.category) {
+      const categories = req.query.category.toString().split(",").map((s) => s.trim());
       find.category = {
-        $in: req.query.category.toString().split(",").map((s) => s.trim()),
+        $in: categories.map((cat) => new RegExp(cat, "i"))  // "i" là không phân biệt hoa thường
       };
     }
 
     // Lọc theo jobForm
     if (req.query.jobForm) {
+      const jobForms = req.query.jobForm.toString().split(",").map((s) => s.trim());
       find.jobForm = {
-        $in: req.query.jobForm.toString().split(",").map((s) => s.trim()),
+        $in: jobForms.map((form) => new RegExp(form, "i"))
       };
     }
 
     // Lọc theo jobType
     if (req.query.jobType) {
+      const jobTypes = req.query.jobType.toString().split(",").map((s) => s.trim());
       find.jobType = {
-        $in: req.query.jobType.toString().split(",").map((s) => s.trim()),
+        $in: jobTypes.map((type) => new RegExp(type, "i"))
       };
     }
+
 
     // Lọc theo mức lương
     if (req.query.minSalary || req.query.maxSalary) {
@@ -73,7 +77,7 @@ try {
     const objectPagination = paginationHelper(
       {
         currentPage: 1,
-        limitItems:  parseInt(req.query.limit as string) || 30
+        limitItems: parseInt(req.query.limit as string) || 30
       },
       req.query,
       countJobs
@@ -81,8 +85,8 @@ try {
     // sắp xếp theo sortkey và sortvalue tương ứng
     const sort = {};
     if (req.query.sortKey && req.query.sortValue) {
-        const sortKey = req.query.sortKey.toString();
-        sort[sortKey] = req.query.sortValue;
+      const sortKey = req.query.sortKey.toString();
+      sort[sortKey] = req.query.sortValue;
     }
     //end sort
     // Truy vấn danh sách job
@@ -93,7 +97,7 @@ try {
     res.status(200).json({
       data: jobs,
       pagination: objectPagination,
-      countJobs:countJobs
+      countJobs: countJobs
     });
   } catch (error) {
     console.error("Job Index Error:", error);
@@ -102,16 +106,16 @@ try {
 }
 //[GET]/api/v1/jobs/detail/:id
 export const detail = async (req: Request, res: Response) => {
-    try {
-        const id = req.params.id;
-        // console.log(id);
-        const task = await Job.findOne({
-            _id: id,
-            deleted: false
-        });
-        res.json(task);
-    } catch (error) {
-        res.status(404).json({ mesage: "Lỗi không lấy được chi tiết công việc!" });
-    }
+  try {
+    const id = req.params.id;
+    // console.log(id);
+    const task = await Job.findOne({
+      _id: id,
+      deleted: false
+    });
+    res.json(task);
+  } catch (error) {
+    res.status(404).json({ mesage: "Lỗi không lấy được chi tiết công việc!" });
+  }
 
 }

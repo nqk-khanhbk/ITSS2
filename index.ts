@@ -13,11 +13,11 @@ const app:Express = express();
 
 const port:string | number = process.env.PORT || 8080;
 
-
-//kết nối với routes
-mainRoutes(app);
 //Cors
 app.use(cors());
+//kết nối với routes
+mainRoutes(app);
+
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
   });
