@@ -15,6 +15,7 @@ const port:string | number = process.env.PORT || 8080;
 
 //Cors
 app.use(cors());
+app.use(express.json());
 //kết nối với routes
 mainRoutes(app);
 
