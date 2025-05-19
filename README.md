@@ -127,7 +127,8 @@ http://localhost:8080/api/v1/jobs/detail/681ea42f2d17ecbbb9479b23
 
       [POST]/api/v1/users/:id
 
-      ``` json {
+      ``` json 
+      {
       "name": "Pham Hoang Hai Nam",
       "address": "Ha Noi",
       "major": "IT",
