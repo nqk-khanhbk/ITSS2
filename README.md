@@ -120,29 +120,36 @@ http://localhost:8080/api/v1/jobs/detail/681ea42f2d17ecbbb9479b23
          http://localhost:8080/api/v1/jobs?jobType=Part-Time&category=Gia sư&available=Thứ 2-tối,Thứ 5-tối
 
 6.  Lấy ra thông tin người dùng:
-    [GET]/api/v1/users/:id
+    
+      [GET]/api/v1/users/:id
+
 7.  Cập nhật thông tin người dùng:
-    [POST]/api/v1/users/:id
-    body {
-    "name": "Pham Hoang Hai Nam",
-    "address": "Ha Noi",
-    "major": "IT",
-    "university": "HUST",
-    "jobType": "Part-Time",
-    "jobForm": "Internship",
-    "desiredJob": "Gia su",
-    "phone": "0123456789",
-    "workingSchedule": [
-    {
-    "day": "Thứ 5",
-    "period": "sáng"
-    },
-    {
-    "day": "Thứ 6",
-    "period": "sáng"
-    }
-    ]
-    }
-    Note: Chỉ có name là bắt buộc có, mấy cái thông tin khác có hay không không quan trọng, quan trọng là nếu không có thì không suggest ra cái công việc gì được đâu.
+
+      [POST]/api/v1/users/:id
+
+      ``` json {
+      "name": "Pham Hoang Hai Nam",
+      "address": "Ha Noi",
+      "major": "IT",
+      "university": "HUST",
+      "jobType": "Part-Time",
+      "jobForm": "Internship",
+      "desiredJob": "Gia su",
+      "phone": "0123456789",
+      "workingSchedule": [
+      {
+      "day": "Thứ 5",
+      "period": "sáng"
+      },
+      {
+      "day": "Thứ 6",
+      "period": "sáng"
+      }
+      ]
+      }
+      
+      Note: Chỉ có name là bắt buộc có, mấy cái thông tin khác có hay không không quan trọng, quan trọng là nếu không có thì không suggest ra cái công việc gì được đâu.
+
 8.  Lấy ra công việc phù hợp:
-    [GET]/api/v1/users/:id/suggested-jobs
+    
+      [GET]/api/v1/users/:id/suggested-jobs
