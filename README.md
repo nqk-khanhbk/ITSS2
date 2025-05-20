@@ -157,11 +157,11 @@ http://localhost:8080/api/v1/jobs/detail/681ea42f2d17ecbbb9479b23
 
 9. Lấy ra danh sách mấy cái cần lấy:
 
-        [GET]/api/v1/users/:id/get-jtype-list
+        [GET]/api/v1/users/:id/get-jtype-list -> lấy ra jobType 
 
-        [GET]/api/v1/users/:id/get-jform-list
+        [GET]/api/v1/users/:id/get-jform-list -> lấy ra jobForm
 
-        [GET]/api/v1/users/:id/get-category-list
+        [GET]/api/v1/users/:id/get-category-list -> lấy ra category
 
 10. USER_ID:
     
