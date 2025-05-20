@@ -90,23 +90,46 @@ export const index = async (req: Request, res: Response) => {
     }
     //end sort
     // Lọc theo thời gian linh hoạt của khách hàng
+    // if (req.query.available) {
+    //   const userAvailable = req.query.available
+    //     .toString()
+    //     .split(",")
+    //     .map((item) => {
+    //       const [day, period] = item.trim().split("-");
+    //       return { day, period };
+    //     });
+
+    //   // Tìm job có ít nhất 1 buổi trùng với người dùng
+    //   find.workingSchedule = {
+    //     $elemMatch: {
+    //       $or: userAvailable.map(({ day, period }) => ({
+    //         day,
+    //         period
+    //       }))
+    //     }
+    //   };
+    // }
+
+    // Lọc theo thời gian linh hoạt (workingSchedule là tập con của userAvailable)
     if (req.query.available) {
       const userAvailable = req.query.available
         .toString()
         .split(",")
         .map((item) => {
           const [day, period] = item.trim().split("-");
-          return { day, period };
+          return { day: day.trim(), period: period.trim() };
         });
 
-      // Tìm job có ít nhất 1 buổi trùng với người dùng
+      // Lọc: mọi phần tử trong workingSchedule phải nằm trong userAvailable
       find.workingSchedule = {
-        $elemMatch: {
-          $or: userAvailable.map(({ day, period }) => ({
-            day,
-            period
-          }))
-        }
+        $not: {
+          $elemMatch: {
+            $nor: userAvailable.map(({ day, period }) => ({
+              day,
+              period,
+            })),
+          },
+        },
       };
     }
     const count = await Job.countDocuments(find);

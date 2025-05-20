@@ -38,8 +38,19 @@ const jobSchema = new mongoose.Schema(
         }
       }
     ],
-    startDate: { type: Date },               // Ngày bắt đầu
-    endDate: { type: Date },                 // Ngày kết thúc
+
+    startDate: { type: Date },              	//Ngày người lao động bắt đầu làm việc
+    endDate: { type: Date },                  //Ngày kết thúc hợp đồng/chấm dứt làm việc
+
+    recruitStartDate: {                       //Ngày người lao động bắt đầu làm việc
+      type: Date,
+      required: true,
+    },
+
+    recruitEndDate: {               //Ngày kết thúc hợp đồng/chấm dứt làm việc    
+      type: Date,
+      required: true,
+    },
     description: { type: String },           // Mô tả công việc chi tiết
 
     deleted: { type: Boolean, default: false },
