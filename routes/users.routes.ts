@@ -7,4 +7,10 @@ router.get("/:id", controller.getUserInfo);
 router.post("/:id", controller.updateUserInfo);
 //[GET]/api/v1/users/:id/suggested-jobs
 router.get("/:id/suggested-jobs", controller.suggestJobs);
+//[GET}/api/v1/users/get-jtype-list
+router.get("/:id/get-jtype-list", controller.getJobTypeList);
+//[GET}/api/v1/users/get-jform-list
+router.get("/:id/get-jform-list", controller.getJobFormList);
+//[GET}/api/v1/users/get-category-list]
+router.get("/:id/get-category-list", controller.getCategoryList);
 export const userRoutes: Router = router;

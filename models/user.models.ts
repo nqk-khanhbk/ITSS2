@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
   jobForm: { type: String },
   university: { type: String },
   major: { type: String },
-  desiredJob: { type: String },
+  desiredJob: { type: String }, //dec
+  category: { type: String }, //use this from now
   workingSchedule: [
     {
       day: {

@@ -154,3 +154,14 @@ http://localhost:8080/api/v1/jobs/detail/681ea42f2d17ecbbb9479b23
 8.  Lấy ra công việc phù hợp:
     
       [GET]/api/v1/users/:id/suggested-jobs
+
+9. Lấy ra danh sách mấy cái cần lấy:
+
+        [GET]/api/v1/users/:id/get-jtype-list
+
+        [GET]/api/v1/users/:id/get-jform-list
+
+        [GET]/api/v1/users/:id/get-category-list
+
+10. USER_ID:
+        682b71380c69774bd1f056bd

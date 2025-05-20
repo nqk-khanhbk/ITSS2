@@ -31,7 +31,7 @@ export const updateUserInfo = async (req: Request, res: Response) => {
       jobForm,
       university,
       major,
-      desiredJob,
+      category,
       workingSchedule,
     } = req.body;
     const updatedUser = await User.findByIdAndUpdate(
@@ -45,7 +45,7 @@ export const updateUserInfo = async (req: Request, res: Response) => {
         jobForm,
         university,
         major,
-        desiredJob,
+        category,
         workingSchedule,
       },
       { new: true, upsert: true }
@@ -102,4 +102,35 @@ export const suggestJobs = async (req: Request, res: Response) => {
   const topJobs = scoredJobs.slice(0, 10);
   const result = topJobs.map((entry) => entry.job);
   res.status(200).json(result);
+};
+
+//[GET]/api/v1/users/:id/get-jtype-list
+export const getJobTypeList = async (req: Request, res: Response) => {
+  try {
+    const jobTypes = await Job.distinct("jobType");
+    res.status(200).json(jobTypes);
+  } catch (error) {
+    console.error("Error fetching job types:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+//[GET]/api/v1/users/:id/get-jform-list
+export const getJobFormList = async (req: Request, res: Response) => {
+  try {
+    const jobForms = await Job.distinct("jobForm");
+    res.status(200).json(jobForms);
+  } catch (error) {
+    console.error("Error fetching job forms:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+//[GET]/api/v1/users/:id/get-category-list
+export const getCategoryList = async (req: Request, res: Response) => {
+  try {
+    const categories = await Job.distinct("category");
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Error fetching job categories:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
