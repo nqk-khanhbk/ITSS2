@@ -16,7 +16,7 @@ export const index = async (req: Request, res: Response) => {
     if (keyword) {
       const regex = new RegExp(keyword, "i");
       conditions.push({
-        category: regex, // hoặc mở rộng: $or: [{ category: regex }, { title: regex }]
+        title: regex, // hoặc mở rộng: $or: [{ category: regex }, { title: regex }]
       });
     }
 
